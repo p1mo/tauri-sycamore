@@ -1,4 +1,4 @@
 /target-dist/
 /target/
 /Cargo.lock
-client/Cargo.toml
+/client/Cargo.toml
