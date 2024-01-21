@@ -61,26 +61,42 @@ body {
 
 
 .panel-1 {
+    @apply grid grid-cols-1 gap-2;
+}
+.panel-2 {
+    @apply grid grid-cols-2 gap-2;
+}
+.panel-3 {
     @apply grid grid-cols-3 gap-2;
 }
 
-.panel-1 .panel-title {
+.panel-1 .panel-title,
+.panel-2 .panel-title,
+.panel-3 .panel-title {
     @apply flex items-center h-[40px] pl-2 text-sm font-semibold;
     @apply bg-black bg-opacity-10 rounded-md my-1;
 }
 
-.panel-1 .line {
-    @apply grid grid-cols-2 h-[30px] text-sm;
+.panel-1 .line,
+.panel-2 .line,
+.panel-3 .line {
+    @apply grid grid-cols-2 min-h-[30px] text-sm;
     @apply bg-black bg-opacity-5;
 }
 
-.panel-1 .line:nth-child(odd) {
+.panel-1 .line:nth-child(odd),
+.panel-2 .line:nth-child(odd),
+.panel-3 .line:nth-child(odd) {
     @apply bg-black bg-opacity-20;
 }
 
-.panel-1 .line b {
+.panel-1 .line b,
+.panel-2 .line b,
+.panel-3 .line b {
     @apply pl-2;
 }
-.panel-1 .line b, .panel-1 .line i {
+.panel-1 .line b, .panel-1 .line i,
+.panel-2 .line b, .panel-2 .line i,
+.panel-3 .line b, .panel-3 .line i {
     @apply flex items-center h-[30px];
 }

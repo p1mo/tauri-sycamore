@@ -20,6 +20,8 @@ struct GreetEmit<'a> {
 #[component]
 pub fn App<G: Html>(cx: Scope) -> View<G> {
 
+    // TEST OS PLUGIN
+
     let os_arch = create_signal(cx, String::new());
     let os_exe_extension = create_signal(cx, String::new());
     let os_family = create_signal(cx, String::new());
@@ -90,6 +92,7 @@ pub fn App<G: Html>(cx: Scope) -> View<G> {
     });
 
 
+    // TEST CORE
 
     let input_invoke = create_signal(cx, String::new());
     let msg_invoke = create_signal(cx, String::new());
@@ -104,6 +107,7 @@ pub fn App<G: Html>(cx: Scope) -> View<G> {
     };
     
 
+    // TEST EVENT
 
     let input_emit = create_signal(cx, String::new());
     let msg_emit = create_signal(cx, String::new());
@@ -135,6 +139,75 @@ pub fn App<G: Html>(cx: Scope) -> View<G> {
         });
     };
 
+
+    // TEST API APP
+
+    let app_get_name = create_signal(cx, String::new());
+    let app_get_version = create_signal(cx, String::new());
+    let app_get_tauri_version = create_signal(cx, String::new());
+
+    spawn_local_scoped(cx, async move {
+
+        let get_name = tauri_wasm::api::app::get_name().await.unwrap();
+        app_get_name.set(get_name);
+
+        let get_version = tauri_wasm::api::app::get_version().await.unwrap();
+        app_get_version.set(format!("{}.{}.{}", get_version.major, get_version.minor, get_version.patch));
+
+        let get_tauri_version = tauri_wasm::api::app::get_tauri_version().await.unwrap();
+        app_get_tauri_version.set(format!("{}.{}.{}", get_tauri_version.major, get_tauri_version.minor, get_tauri_version.patch));
+
+    });
+
+    let app_hide = move |e: Event| {
+        e.prevent_default();
+        spawn_local_scoped(cx, async move {
+            tauri_wasm::js::console::log("test: app_hide");
+            tauri_wasm::api::app::hide().await.expect("app_hide error");
+        });
+    };
+
+    let app_show = move |e: Event| {
+        e.prevent_default();
+        spawn_local_scoped(cx, async move {
+            tauri_wasm::js::console::log("test: app_show");
+            tauri_wasm::api::app::show().await.expect("app_show error");
+        });
+    };
+
+
+    // TEST API PATH
+
+    let path_app_config_dir = create_signal(cx, String::new());
+    let path_app_data_dir = create_signal(cx, String::new());
+    let path_app_local_data_dir = create_signal(cx, String::new());
+    let path_app_cache_dir = create_signal(cx, String::new());
+    let path_audio_dir = create_signal(cx, String::new());
+
+    spawn_local_scoped(cx, async move {
+
+        let app_config_dir = tauri_wasm::api::path::app_config_dir().await.unwrap();
+        path_app_config_dir.set(app_config_dir.display().to_string());
+
+        let app_data_dir = tauri_wasm::api::path::app_data_dir().await.unwrap();
+        path_app_data_dir.set(app_data_dir.display().to_string());
+
+        let app_local_data_dir = tauri_wasm::api::path::app_local_data_dir().await.unwrap();
+        path_app_local_data_dir.set(app_local_data_dir.display().to_string());
+
+        let app_cache_dir = tauri_wasm::api::path::app_cache_dir().await.unwrap();
+        path_app_cache_dir.set(app_cache_dir.display().to_string());
+
+        let audio_dir = tauri_wasm::api::path::audio_dir().await.unwrap();
+        path_audio_dir.set(audio_dir.display().to_string());
+
+    });
+
+
+
+
+
+
     view! { cx,
         div(class="header") {
             a(href="https://beta.tauri.app",target="_blank",class="logo-link") {
@@ -156,7 +229,7 @@ pub fn App<G: Html>(cx: Scope) -> View<G> {
 
         main() {
 
-            div(class="panel-1") {
+            div(class="panel-3") {
                 div() {
                     span(class="panel-title") { "OS Info" }
                     p(class="line") { b{ "Arch: " }       i{ (os_arch.get()) } }
@@ -186,8 +259,25 @@ pub fn App<G: Html>(cx: Scope) -> View<G> {
 
                 div() {
 
-                    span(class="panel-title") { "Event Emit/Listen" }
+                    span(class="panel-title") { "API APP" }
+                    p(class="line") { b{ "Name: " } i{ (app_get_name.get()) } }
+                    p(class="line") { b{ "Version: " } i{ (app_get_version.get()) } }
+                    p(class="line") { b{ "Tauri Version: " } i{ (app_get_tauri_version.get()) } }
+                    p(class="line") { button(type="button",on:click=app_hide) { "App Hide" } button(type="button",on:click=app_show) { "App Show" } }
 
+                }
+
+            }
+
+            div(class="panel-1") {
+
+                div() {
+                    span(class="panel-title") { "Path Info" }
+                    p(class="line") { b{ "config_dir: " } i{ (path_app_config_dir.get()) } }
+                    p(class="line") { b{ "data_dir: " } i{ (path_app_data_dir.get()) } }
+                    p(class="line") { b{ "local_data_dir: " } i{ (path_app_local_data_dir.get()) } }
+                    p(class="line") { b{ "cache_dir: " } i{ (path_app_cache_dir.get()) } }
+                    p(class="line") { b{ "audio_dir: " } i{ (path_audio_dir.get()) } }
                 }
 
             }
