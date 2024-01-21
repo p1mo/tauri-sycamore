@@ -1,0 +1,86 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+@import "./ui.css";
+
+:root {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%; 
+}
+
+body {
+    @apply bg-[#f6f6f6] text-[#0f0f0f];
+    @apply dark:bg-[#2f2f2f] dark:text-[#f6f6f6];
+}
+
+.header {
+    @apply flex justify-center w-full h-[50px];
+    @apply bg-black bg-opacity-10;
+}
+
+.header .logo-link {
+    @apply flex items-center justify-center w-[50px] h-[50px];
+    @apply relative transition-colors hover:bg-black hover:bg-opacity-20;
+}
+
+.header .logo-link .logo {
+    @apply w-[24px] h-[24px];
+}
+
+.text-tauri {
+    background-image        : linear-gradient(45deg,#FFC131,#FFC131,#24C8DB,#24C8DB);
+    -webkit-background-clip : text;
+    -webkit-text-fill-color : transparent;
+}
+
+.text-sycamore {
+    background-image        : linear-gradient(90deg,#F8B94C,#F39636);
+    -webkit-background-clip : text;
+    -webkit-text-fill-color : transparent;
+}
+
+.text-wasm {
+    @apply text-[#654ff0];
+}
+
+.header .logo-link .logo-text {
+    @apply flex flex-col items-center justify-center w-[50px] h-[50px];
+}
+
+.header .logo-link .logo-text .font-tauri {
+    @apply text-[12px] font-semibold;
+}
+.header .logo-link .logo-text .font-wasm {
+    @apply text-[11px] font-semibold;
+}
+
+
+.panel-1 {
+    @apply grid grid-cols-3 gap-2;
+}
+
+.panel-1 .panel-title {
+    @apply flex items-center h-[40px] pl-2 text-sm font-semibold;
+    @apply bg-black bg-opacity-10 rounded-md my-1;
+}
+
+.panel-1 .line {
+    @apply grid grid-cols-2 h-[30px] text-sm;
+    @apply bg-black bg-opacity-5;
+}
+
+.panel-1 .line:nth-child(odd) {
+    @apply bg-black bg-opacity-20;
+}
+
+.panel-1 .line b {
+    @apply pl-2;
+}
+.panel-1 .line b, .panel-1 .line i {
+    @apply flex items-center h-[30px];
+}

@@ -1,0 +1,25 @@
+[workspace.package]
+authors         = [ "p1mo" ]
+license         = "MIT"
+repository      = "https://github.com/p1mo/tauri-sycamore"
+edition         = "2021"
+rust-version    = "1.75"
+
+[workspace.lints.rust]
+unsafe_code     = "forbid"
+unused          = "allow"
+
+[workspace]
+resolver        = "2"
+members         = [
+    # Client
+    "client",
+    # Tauri
+    "system",
+]
+
+[workspace.dependencies]
+sycamore    = { version = "0.8", features = ["suspense"] }
+
+serde       = { version = "1.0", features = ["derive"] }
+serde_json  = "1.0"

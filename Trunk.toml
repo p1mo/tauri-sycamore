@@ -1,0 +1,12 @@
+[build]
+target  = "./client/index.html"
+dist    = "./target-dist"
+
+[watch]
+watch   = [ "./client/src", "./client/css" ]
+ignore  = [ "./system" ]
+
+[serve]
+address = "127.0.0.1"
+port    = 1420
+open    = false

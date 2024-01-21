@@ -1,0 +1,12 @@
+input {
+    @apply h-[40px] px-[10px] m-1 text-sm rounded-md;
+    @apply outline-none bg-black bg-opacity-20 drop-shadow;
+}
+input:focus, input:active {
+    @apply bg-opacity-25;
+}
+
+button[type="submit"] {
+    @apply h-[40px] px-[15px] m-1 text-sm rounded-md transition-colors;
+    @apply outline-none bg-black bg-opacity-20 hover:bg-opacity-40 drop-shadow;
+}

@@ -1,0 +1,52 @@
+{
+  "build": {
+    "beforeDevCommand": "trunk clean && trunk serve",
+    "beforeBuildCommand": "trunk build --release",
+    "devPath": "http://127.0.0.1:1420",
+    "distDir": "../target-dist",
+    "withGlobalTauri": true
+  },
+  "package": {
+    "productName": "tauri-sycamore",
+    "version": "0.0.0"
+  },
+  "tauri": {
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.github.p1mo.sycamore",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ]
+    },
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "label": "main",
+        "fullscreen": false,
+        "resizable": true,
+        "title": "tauri-sycamore",
+        "width": 1100,
+        "height": 600
+      }
+    ]
+  },
+  "plugins": {
+    "shell": {
+      "open": true
+    },
+    "os": {
+      "all": true
+    },
+    "fs": {
+      "all": true,
+      "scope" : [ "$APPDATA" ]
+    }
+  }
+}
