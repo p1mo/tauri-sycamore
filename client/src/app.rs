@@ -204,6 +204,40 @@ pub fn App<G: Html>(cx: Scope) -> View<G> {
     });
 
 
+    // TEST PLUGIN FS
+
+    let exists_data_dir = create_signal(cx, String::new());
+
+    spawn_local_scoped(cx, async move {
+
+        let data_dir = tauri_wasm::api::path::app_data_dir().await.unwrap();
+
+        let path = std::path::Path::new(&data_dir);
+
+        tauri_wasm::js::console::log(&format!("data_dir: {}", path.display()).to_string());
+
+        let edd = tauri_wasm::plugin::fs::exists(&path, tauri_wasm::plugin::fs::BaseDirectory::AppData).await;
+
+        match edd {
+            Ok(res) => {
+
+                tauri_wasm::js::console::log(&format!("[FS] {}", res));
+
+                exists_data_dir.set(res.to_string());
+
+            },
+            Err(error) => {
+
+                tauri_wasm::js::console::error(&format!("[FS] Error: {}", error));
+
+                exists_data_dir.set("Error: ".to_string());
+
+            },            
+        };
+
+    });
+
+
 
 
 
@@ -264,6 +298,9 @@ pub fn App<G: Html>(cx: Scope) -> View<G> {
                     p(class="line") { b{ "Version: " } i{ (app_get_version.get()) } }
                     p(class="line") { b{ "Tauri Version: " } i{ (app_get_tauri_version.get()) } }
                     p(class="line") { button(type="button",on:click=app_hide) { "App Hide" } button(type="button",on:click=app_show) { "App Show" } }
+
+                    span(class="panel-title") { "Plugin FS" }
+                    p(class="line") { b{ "exists: " } i{ (exists_data_dir.get()) } }
 
                 }
 
