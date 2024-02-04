@@ -8,7 +8,8 @@ repository.workspace    = true
 edition.workspace       = true
 rust-version.workspace  = true
 
-
+[lints]
+workspace = true
 
 [dependencies]
 js-sys = "0.3"
@@ -21,4 +22,4 @@ wasm-bindgen-futures = "0.4"
 serde       = { workspace = true, features = ["derive"] }
 sycamore    = { workspace = true, features = ["suspense"] }
 
-tauri-wasm  = { git = "https://github.com/p1mo/tauri-wasm", features = [ "all", "plugin-all" ] }
+tauri-wasm  = { git = "https://github.com/p1mo/tauri-wasm", branch = "dev", features = [ "all", "plugin-all" ] }

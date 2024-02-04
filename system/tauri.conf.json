@@ -1,28 +1,25 @@
 {
   "build": {
-    "beforeDevCommand": "trunk clean && trunk serve",
+    "beforeDevCommand": "trunk serve",
     "beforeBuildCommand": "trunk build --release",
-    "devPath": "http://127.0.0.1:1420",
-    "distDir": "../target-dist",
-    "withGlobalTauri": true
+    "devUrl": "http://localhost:1420",
+    "frontendDist": "../dist"
   },
-  "package": {
-    "productName": "tauri-sycamore",
-    "version": "0.0.0"
+  "identifier": "com.tauri.tauri",
+  "productName": "testeing-desktop",
+  "version": "0.0.0",
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
   },
-  "tauri": {
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "com.github.p1mo.sycamore",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ]
-    },
+  "app": {
     "security": {
       "csp": null
     },
@@ -38,16 +35,60 @@
     ]
   },
   "plugins": {
+
     "shell": {
       "open": true
     },
-    "os": {
-      "all": true
-    },
+
     "fs": {
       "all"     : true,
       "scope"   : [ "$APPCONFIG", "$APPDATA", "$APPLOCALDATA", "$APPCACHE", "$APPLOG", "$AUDIO", "$CACHE", "$CONFIG", "$DATA", "$LOCALDATA", "$DESKTOP", "$DOCUMENT", "$DOWNLOAD", "$EXE", "$FONT", "$HOME", "$PICTURE", "$PUBLIC", "$RUNTIME", "$TEMPLATE", "$VIDEO", "$RESOURCE", "$APP", "$LOG", "$TEMP" ],
       "exists"  : true
+    },
+    
+    "cli": {
+      "description": "Tauri API example",
+      "args": [
+        {
+          "short": "c",
+          "name": "config",
+          "takesValue": true,
+          "description": "Config path"
+        }
+      ],
+      "subcommands": {
+        "update": {
+          "description": "Updates the app",
+          "args": [
+            {
+              "short": "b",
+              "name": "background",
+              "description": "Update in background"
+            }
+          ]
+        }
+      }
+    },
+
+    "http": {
+      "scope": ["http://localhost:3003"]
+    },
+
+    "updater": {
+      "endpoints": [ "https://example.com/update/{{target}}/{{current_version}}" ]
+    },
+
+    "window": {
+      "all": false,
+      "close": true,
+      "hide": true,
+      "show": true,
+      "maximize": true,
+      "minimize": true,
+      "unmaximize": true,
+      "unminimize": true,
+      "startDragging": true
     }
+
   }
 }
