@@ -1,5 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use tauri::Emitter;
+use tauri::Listener;
 use tauri::WebviewWindow;
 use tauri::Manager;
 use tauri::PhysicalPosition;
@@ -106,9 +108,7 @@ fn main() {
                 println!("ScaleFactorChanged: {} w:{} h:{}", scale_factor, new_inner_size.width, new_inner_size.height);
 
             },
-            tauri::WindowEvent::FileDrop(_) => {
-
-            },
+            //tauri::WindowEvent::FileDrop(_) => {},
             tauri::WindowEvent::ThemeChanged(_) => {
 
             },

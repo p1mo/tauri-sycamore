@@ -20,6 +20,7 @@
     ]
   },
   "app": {
+    "withGlobalTauri": true,
     "security": {
       "csp": null
     },
@@ -38,12 +39,6 @@
 
     "shell": {
       "open": true
-    },
-
-    "fs": {
-      "all"     : true,
-      "scope"   : [ "$APPCONFIG", "$APPDATA", "$APPLOCALDATA", "$APPCACHE", "$APPLOG", "$AUDIO", "$CACHE", "$CONFIG", "$DATA", "$LOCALDATA", "$DESKTOP", "$DOCUMENT", "$DOWNLOAD", "$EXE", "$FONT", "$HOME", "$PICTURE", "$PUBLIC", "$RUNTIME", "$TEMPLATE", "$VIDEO", "$RESOURCE", "$APP", "$LOG", "$TEMP" ],
-      "exists"  : true
     },
     
     "cli": {

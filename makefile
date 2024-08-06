@@ -1,22 +1,18 @@
 include makefile.vars.mk
 
+.PHONY: look
 look:
 	@echo CURR_OS:   $(CURR_OS)
 	@echo CURR_ARCH: $(CURR_ARCH)
 
+.PHONY: dev
 dev:
 	cargo tauri dev
 
+.PHONY: devr
 devr:
 	cargo tauri dev --release
 
+.PHONY: clean
 clean:
-	ifeq ($(CURR_OS),WIN32)
-    	wsl -e bash -c "rm Cargo.lock && rm -r target/"
-	endif
-	ifeq ($(CURR_OS),LINUX)
-    	rm Cargo.lock && rm -r target/
-	endif
-	ifeq ($(CURR_OS),OSX)
-    	rm Cargo.lock && rm -r target/
-	endif
+	wsl -e bash -c "rm Cargo.lock && rm -r target/"

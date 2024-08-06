@@ -29,64 +29,32 @@ pub fn App<G: Html>(cx: Scope) -> View<G> {
     let os_locale = create_signal(cx, String::new());
     let os_platform = create_signal(cx, String::new());
     let os_kind = create_signal(cx, String::new());
-    let os_version = create_signal(cx, String::new());
+    let os_version = create_signal(cx, String::new()); 
 
     spawn_local_scoped(cx, async move {
 
-        let arch = tauri_wasm::plugin::os::arch().await.unwrap();
+        let arch = tauri_wasm::plugin::os::arch().unwrap();  
+        os_arch.set(arch.as_str().to_string());
 
-        match arch {
-            tauri_wasm::plugin::os::Arch::X86       => os_arch.set("X86".to_string()),
-            tauri_wasm::plugin::os::Arch::X86_64    => os_arch.set("X86_64".to_string()),
-            tauri_wasm::plugin::os::Arch::Arm       => os_arch.set("Arm".to_string()),
-            tauri_wasm::plugin::os::Arch::Aarch64   => os_arch.set("Aarch64".to_string()),
-            tauri_wasm::plugin::os::Arch::Mips      => os_arch.set("Mips".to_string()),
-            tauri_wasm::plugin::os::Arch::Mips64    => os_arch.set("Mips64".to_string()),
-            tauri_wasm::plugin::os::Arch::Powerpc   => os_arch.set("Powerpc".to_string()),
-            tauri_wasm::plugin::os::Arch::Powerpc64 => os_arch.set("Powerpc64".to_string()),
-            tauri_wasm::plugin::os::Arch::Riscv64   => os_arch.set("Riscv64".to_string()),
-            tauri_wasm::plugin::os::Arch::S390x     => os_arch.set("S390x".to_string()),
-            tauri_wasm::plugin::os::Arch::Sparc64   => os_arch.set("Sparc64".to_string()),
-        };
-
-        let exe_extension = tauri_wasm::plugin::os::exe_extension().await.unwrap();
+        let exe_extension = tauri_wasm::plugin::os::exe_extension().unwrap(); 
         os_exe_extension.set(exe_extension);
 
-        let family = tauri_wasm::plugin::os::family().await.unwrap();
-        os_family.set(family);
+        let family = tauri_wasm::plugin::os::family().unwrap();
+        os_family.set(family.as_str().to_string());
 
-        let hostname = tauri_wasm::plugin::os::hostname().await.unwrap();
+        let hostname = tauri_wasm::plugin::os::hostname().await.unwrap(); 
         os_hostname.set(hostname);
 
         let locale = tauri_wasm::plugin::os::locale().await.unwrap();
         os_locale.set(locale);   
 
-        let platform = tauri_wasm::plugin::os::platform().await.unwrap();
+        let platform = tauri_wasm::plugin::os::platform().unwrap();
+        os_platform.set(platform.as_str().to_string());
 
-        match platform {
-            tauri_wasm::plugin::os::Platform::Linux     => os_platform.set("Linux".to_string()),
-            tauri_wasm::plugin::os::Platform::Macos     => os_platform.set("Macos".to_string()),
-            tauri_wasm::plugin::os::Platform::Ios       => os_platform.set("Ios".to_string()),
-            tauri_wasm::plugin::os::Platform::Freebsd   => os_platform.set("Freebsd".to_string()),
-            tauri_wasm::plugin::os::Platform::Dragonfly => os_platform.set("Dragonfly".to_string()),
-            tauri_wasm::plugin::os::Platform::Netbsd    => os_platform.set("Netbsd".to_string()),
-            tauri_wasm::plugin::os::Platform::Openbsd   => os_platform.set("Openbsd".to_string()),
-            tauri_wasm::plugin::os::Platform::Solaris   => os_platform.set("Solaris".to_string()),
-            tauri_wasm::plugin::os::Platform::Android   => os_platform.set("Android".to_string()),
-            tauri_wasm::plugin::os::Platform::Windows   => os_platform.set("Windows".to_string()),
-        };
+        let kind = tauri_wasm::plugin::os::kind().unwrap();
+        os_kind.set(kind.as_str().to_string());
 
-        let kind = tauri_wasm::plugin::os::kind().await.unwrap();
-
-        match kind {
-            tauri_wasm::plugin::os::OsKind::Linux       => os_kind.set("Linux".to_string()),
-            tauri_wasm::plugin::os::OsKind::Windows     => os_kind.set("Windows".to_string()),
-            tauri_wasm::plugin::os::OsKind::Macos       => os_kind.set("Macos".to_string()),
-            tauri_wasm::plugin::os::OsKind::Ios         => os_kind.set("Ios".to_string()),
-            tauri_wasm::plugin::os::OsKind::Android     => os_kind.set("Android".to_string()),
-        };
-
-        let version = tauri_wasm::plugin::os::version().await.unwrap();
+        let version = tauri_wasm::plugin::os::version().unwrap();
         os_version.set(version);    
 
     });
@@ -152,10 +120,18 @@ pub fn App<G: Html>(cx: Scope) -> View<G> {
         app_get_name.set(get_name);
 
         let get_version = tauri_wasm::api::app::get_version().await.unwrap();
-        app_get_version.set(format!("{}.{}.{}", get_version.major, get_version.minor, get_version.patch));
+        if get_version.pre.is_empty() {
+            app_get_version.set(format!("{}.{}.{}", get_version.major, get_version.minor, get_version.patch));
+        } else {
+            app_get_version.set(format!("{}.{}.{}-{}", get_version.major, get_version.minor, get_version.patch, get_version.pre.as_str().to_string()));
+        }
 
         let get_tauri_version = tauri_wasm::api::app::get_tauri_version().await.unwrap();
-        app_get_tauri_version.set(format!("{}.{}.{}", get_tauri_version.major, get_tauri_version.minor, get_tauri_version.patch));
+        if get_tauri_version.pre.is_empty() {
+            app_get_tauri_version.set(format!("{}.{}.{}", get_tauri_version.major, get_tauri_version.minor, get_tauri_version.patch));
+        } else {
+            app_get_tauri_version.set(format!("{}.{}.{}-{}", get_tauri_version.major, get_tauri_version.minor, get_tauri_version.patch, get_tauri_version.pre.as_str().to_string()));
+        }
 
     });
 
